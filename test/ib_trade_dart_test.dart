@@ -1,0 +1,15 @@
+import 'package:test/test.dart';
+
+void main() {
+
+  group('A group of tests', () {
+    setUp(() {
+      // Additional setup goes here.
+    });
+
+    test('Initial placeholder test', () {
+      expect(true, isTrue);
+    });
+  });
+}
+
