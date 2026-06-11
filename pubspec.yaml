@@ -1,10 +1,12 @@
 name: ib_trade_dart
-description: A starting point for Dart libraries or applications.
-version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+description: Interactive Brokers SDK for Dart and Flutter.
+version: 0.1.0
+homepage: https://github.com/Aloshanai/ib_trade_dart
+repository: https://github.com/Aloshanai/ib_trade_dart
+issue_tracker: https://github.com/Aloshanai/ib_trade_dart/issues
 
 environment:
-  sdk: ^3.11.4
+  sdk: ">=3.0.0 <4.0.0"
 
 # Add regular dependencies here.
 dependencies:
@@ -13,3 +15,4 @@ dependencies:
 dev_dependencies:
   lints: ^6.0.0
   test: ^1.25.6
+
