@@ -1,0 +1,100 @@
+# Interactive Brokers Dart SDK (ib_trade_dart) Architecture Rules
+
+This workspace follows a strict layered architecture protocol. Every AI agent, assistant, or tool interacting with this repository MUST adhere to these architectural layers and rules.
+
+---
+
+## 1. Layered Architecture Protocol
+
+All source code must be partitioned into the following layers. Under no circumstances should lower layers depend on higher layers.
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    Flutter Helpers                      │ (lib/src/flutter/)
+└────────────────────────────┬────────────────────────────┘
+                             ▼
+┌─────────────────────────────────────────────────────────┐
+│                     Trading Layer                       │ (lib/src/orders/ or lib/src/trading/)
+└────────────────────────────┬────────────────────────────┘
+                             ▼
+┌─────────────────────────────────────────────────────────┐
+│                   Market Data Layer                     │ (lib/src/market_data/)
+└────────────────────────────┬────────────────────────────┘
+                             ▼
+┌─────────────────────────────────────────────────────────┐
+│                     Scanner Layer                       │ (lib/src/scanner/)
+└────────────────────────────┬────────────────────────────┘
+                             ▼
+┌─────────────────────────────────────────────────────────┐
+│                    Transport Layer                      │ (lib/src/transport/)
+│         ┌──────────────────┴──────────────────┐         │
+│         ▼                                     ▼         │
+│     TCP Client                            WebSocket     │ (lib/src/transport/tcp/ & websocket/)
+└────────────────────────────┬────────────────────────────┘
+                             ▼
+┌─────────────────────────────────────────────────────────┐
+│                  Core Protocol Layer                    │ (lib/src/core/ & lib/src/models/)
+└─────────────────────────────────────────────────────────┘
+```
+
+### 1.1. Core Protocol Layer
+* **Location:** `lib/src/core/` & `lib/src/models/`
+* **Responsibilities:** 
+  * Basic Interactive Brokers protocol message definition, serialization/deserialization, and serialization rules.
+  * Native IB message encoders/decoders.
+  * Core models (e.g., `Contract`, `Order`, `CommissionReport`, `Execution`).
+  * Basic constants, error codes, and field definitions.
+* **Rules:** Must have NO dependencies on any transport mechanism (TCP/WebSocket) or higher layers.
+
+### 1.2. Transport Layer
+* **Location:** `lib/src/transport/`
+* **Sub-components:**
+  * **TCP Client** (`lib/src/transport/tcp/` or `lib/src/client/`): TCP socket management, reconnect logic, buffered stream readers.
+  * **WebSocket** (`lib/src/transport/websocket/`): WebSocket streams for web/gateway clients.
+* **Responsibilities:** Establish connections, maintain heartbeat, handle raw input/output streams, and frame messages.
+* **Rules:** Depends *only* on the Core Protocol Layer. Must not have any understanding of market data subscriptions or order state.
+
+### 1.3. Scanner Layer
+* **Location:** `lib/src/scanner/`
+* **Responsibilities:** Define scanner subscription requests, parse scanner XML data, map raw search parameters to IB-compatible scanner structures.
+* **Rules:** Depends on Transport Layer (for sending/receiving requests) and Core Protocol Layer.
+
+### 1.4. Market Data Layer
+* **Location:** `lib/src/market_data/`
+* **Responsibilities:** Real-time data streams, tick-by-tick data, historical bars, order book depth.
+* **Rules:** Depends on Transport Layer and Core Protocol Layer.
+
+### 1.5. Trading Layer
+* **Location:** `lib/src/orders/` or `lib/src/trading/`
+* **Responsibilities:** Order construction, pre-submission validation, order placement/cancellation, portfolio tracking, account summaries.
+* **Rules:** Depends on Market Data Layer, Transport Layer, and Core Protocol Layer.
+
+### 1.6. Flutter Helpers
+* **Location:** `lib/src/flutter/`
+* **Responsibilities:** BLoC / Provider / Riverpod state wrappers, connection-state UI widgets, hook integrations for Flutter.
+* **Rules:** The only layer permitted to import `package:flutter`.
+
+---
+
+## 2. Triggering and Loading "Prompt-like Skills"
+
+A "skill" is a predefined prompt/instruction file that defines how to implement a specific feature or solve a common issue.
+
+### 2.1. Structure of Skills
+All skills are located in the `.skills/` directory at the project root.
+Each skill is named `<category>_<skill_name>.md` (e.g., `transport_add_websocket_auth.md`, `trading_validate_order.md`).
+
+### 2.2. Triggering a Skill
+When the user asks you to perform or trigger a skill:
+1. **Locate & Read:** Read the skill file from `.skills/` using `view_file` with the `IsSkillFile: true` option.
+2. **Initialize Base Setup:** Treat this rules file as the base setup. Every skill implementation must conform to this setup.
+3. **Execute:** Execute the implementation steps defined in the skill file, adhering strictly to the architecture protocol above.
+4. **Verify:** Run tests (`flutter test`) and verify layer isolation before declaring completion.
+
+---
+
+## 3. General Implementation Rules
+* **Language:** Dart 3.x with sound null safety.
+* **Lints:** Follow all rules in [analysis_options.yaml](file:///Users/harinikeshr/Documents/2026/projects/ib_trade_dart/analysis_options.yaml).
+* **Testing:** Every layer must have corresponding unit or integration tests in the `test/` directory, mimicking the same layer structure.
+* **Documentation:** All public classes and methods must be documented with dartdoc comments (`///`).
