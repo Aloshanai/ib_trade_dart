@@ -1,6 +1,7 @@
 name: ib_trade_dart
 description: Interactive Brokers SDK for Dart and Flutter.
 version: 0.1.0
+publish_to: 'none'
 homepage: https://github.com/Aloshanai/ib_trade_dart
 repository: https://github.com/Aloshanai/ib_trade_dart
 issue_tracker: https://github.com/Aloshanai/ib_trade_dart/issues
@@ -10,7 +11,10 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
-  # path: ^1.9.0
+  ib_trade_core:
+    path: ../ib_trade_core
+  http: ^1.2.0
+  meta: ^1.11.0
 
 dev_dependencies:
   lints: ^6.0.0
