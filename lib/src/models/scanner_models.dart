@@ -19,9 +19,10 @@ class ScannerParams {
   /// Parses [ScannerParams] from JSON.
   factory ScannerParams.fromJson(Map<String, dynamic> json) {
     return ScannerParams(
-      instrumentList: (json['instrument_list'] ?? json['instrumentList']) is List
-          ? List.from(json['instrument_list'] ?? json['instrumentList'])
-          : [],
+      instrumentList:
+          (json['instrument_list'] ?? json['instrumentList']) is List
+              ? List.from(json['instrument_list'] ?? json['instrumentList'])
+              : [],
       locationTree: (json['location_tree'] ?? json['locationTree']) is List
           ? List.from(json['location_tree'] ?? json['locationTree'])
           : [],
@@ -128,8 +129,12 @@ class ScannerResult {
 
     return ScannerResult(
       conid: parseInt(json['conid'] ?? json['con_id']),
-      symbol: json['symbol']?.toString() ?? json['ticker']?.toString() ?? json['contract_description']?.toString() ?? '',
-      companyName: json['companyName']?.toString() ?? json['company_name']?.toString(),
+      symbol: json['symbol']?.toString() ??
+          json['ticker']?.toString() ??
+          json['contract_description']?.toString() ??
+          '',
+      companyName:
+          json['companyName']?.toString() ?? json['company_name']?.toString(),
       rank: parseInt(json['rank'] ?? (index + 1)),
       price: parseDouble(json['price'] ?? json['price_last']),
       change: parseDouble(json['change'] ?? json['change_percent']),

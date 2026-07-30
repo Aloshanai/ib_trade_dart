@@ -43,7 +43,8 @@ void main() {
           );
         }
         // Second attempt after challenge resolved
-        return http.Response('[{"orderId": "999", "status": "Submitted"}]', 200);
+        return http.Response(
+            '[{"orderId": "999", "status": "Submitted"}]', 200);
       });
 
       final cookieClient = CookieClient(mockClient);
@@ -52,7 +53,8 @@ void main() {
         cookieClient: cookieClient,
       );
 
-      final response = await client.post('iserver/account/U123/orders', body: {'test': true});
+      final response = await client
+          .post('iserver/account/U123/orders', body: {'test': true});
       expect(response.statusCode, equals(200));
       expect(response.body, contains('999'));
     });

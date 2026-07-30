@@ -68,12 +68,14 @@ void main() {
 
     test('subscribeMarketData sends correct smd message', () async {
       manager.subscribeMarketData([265598], fields: ['31', '84']);
-      expect(mockConn.sentMessages, contains('smd+265598+{"fields":["31","84"]}'));
+      expect(
+          mockConn.sentMessages, contains('smd+265598+{"fields":["31","84"]}'));
     });
 
     test('parses incoming market data tick', () async {
       final tickFuture = manager.marketDataStream.first;
-      mockConn.injectMessage('{"topic": "smd+265598", "conid": 265598, "_field": "31", "value": 150.25}');
+      mockConn.injectMessage(
+          '{"topic": "smd+265598", "conid": 265598, "_field": "31", "value": 150.25}');
 
       final tick = await tickFuture;
       expect(tick.conid, equals(265598));
@@ -83,7 +85,8 @@ void main() {
 
     test('parses incoming order status update', () async {
       final orderFuture = manager.orderStatusStream.first;
-      mockConn.injectMessage('{"topic": "sor", "orderId": "5001", "status": "Filled", "totalQuantity": 10, "filledQuantity": 10, "remainingQuantity": 0, "avgFillPrice": 150.0}');
+      mockConn.injectMessage(
+          '{"topic": "sor", "orderId": "5001", "status": "Filled", "totalQuantity": 10, "filledQuantity": 10, "remainingQuantity": 0, "avgFillPrice": 150.0}');
 
       final orderStatus = await orderFuture;
       expect(orderStatus.orderId, equals('5001'));

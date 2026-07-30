@@ -32,17 +32,33 @@ class IbTradeClient {
     SessionTickler? sessionTickler,
     ChallengeHandler? challengeHandler,
   })  : config = config ?? GatewayConfig.fromEnvironment(),
-        httpClient = httpClient ?? HttpClient(bypassSslVerification: config?.bypassSslVerification ?? false),
-        cookieClient = cookieClient ?? CookieClient(httpClient ?? HttpClient(bypassSslVerification: config?.bypassSslVerification ?? false)),
+        httpClient = httpClient ??
+            HttpClient(
+                bypassSslVerification: config?.bypassSslVerification ?? false),
+        cookieClient = cookieClient ??
+            CookieClient(httpClient ??
+                HttpClient(
+                    bypassSslVerification:
+                        config?.bypassSslVerification ?? false)),
         sessionTickler = sessionTickler ??
             SessionTickler(
-              cookieClient ?? CookieClient(httpClient ?? HttpClient(bypassSslVerification: config?.bypassSslVerification ?? false)),
+              cookieClient ??
+                  CookieClient(httpClient ??
+                      HttpClient(
+                          bypassSslVerification:
+                              config?.bypassSslVerification ?? false)),
               (config ?? GatewayConfig.fromEnvironment()).baseHttpUri,
-              interval: Duration(seconds: (config ?? GatewayConfig.fromEnvironment()).tickleIntervalSeconds),
+              interval: Duration(
+                  seconds: (config ?? GatewayConfig.fromEnvironment())
+                      .tickleIntervalSeconds),
             ),
         challengeHandler = challengeHandler ??
             ChallengeHandler(
-              cookieClient ?? CookieClient(httpClient ?? HttpClient(bypassSslVerification: config?.bypassSslVerification ?? false)),
+              cookieClient ??
+                  CookieClient(httpClient ??
+                      HttpClient(
+                          bypassSslVerification:
+                              config?.bypassSslVerification ?? false)),
               (config ?? GatewayConfig.fromEnvironment()).baseHttpUri,
             );
 
@@ -80,7 +96,10 @@ class IbTradeClient {
     List<dynamic> challengesList = [];
     if (responseJson is List) {
       challengesList = responseJson;
-    } else if (responseJson is Map && responseJson.containsKey('id') && (responseJson.containsKey('message') || responseJson.containsKey('messages'))) {
+    } else if (responseJson is Map &&
+        responseJson.containsKey('id') &&
+        (responseJson.containsKey('message') ||
+            responseJson.containsKey('messages'))) {
       challengesList = [responseJson];
     }
 
@@ -105,7 +124,8 @@ class IbTradeClient {
     Map<String, dynamic>? queryParameters,
   }) async {
     final uri = config.baseHttpUri.resolve(endpoint).replace(
-          queryParameters: queryParameters?.map((k, v) => MapEntry(k, v.toString())),
+          queryParameters:
+              queryParameters?.map((k, v) => MapEntry(k, v.toString())),
         );
 
     final reqHeaders = <String, String>{
@@ -133,16 +153,19 @@ class IbTradeClient {
       if (headers != null) ...headers,
     };
 
-    final bodyStr = body != null
-        ? (body is String ? body : jsonEncode(body))
-        : null;
+    final bodyStr =
+        body != null ? (body is String ? body : jsonEncode(body)) : null;
 
-    http.Response response = await cookieClient.post(uri, headers: reqHeaders, body: bodyStr);
+    http.Response response =
+        await cookieClient.post(uri, headers: reqHeaders, body: bodyStr);
 
     if (autoHandleChallenges && response.statusCode == 200) {
       try {
         final jsonResponse = jsonDecode(response.body);
-        if (jsonResponse is List && jsonResponse.isNotEmpty && jsonResponse.first is Map && jsonResponse.first.containsKey('id')) {
+        if (jsonResponse is List &&
+            jsonResponse.isNotEmpty &&
+            jsonResponse.first is Map &&
+            jsonResponse.first.containsKey('id')) {
           return await resolveChallengesAndRetry(
             jsonResponse,
             () => cookieClient.post(uri, headers: reqHeaders, body: bodyStr),

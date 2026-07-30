@@ -15,7 +15,8 @@ class OrderService {
   /// Endpoint: `POST /iserver/account/{acctId}/orders`
   ///
   /// Handles IBKR safety/compliance challenges automatically.
-  Future<List<OrderStatus>> placeOrder(String acctId, OrderRequest request) async {
+  Future<List<OrderStatus>> placeOrder(
+      String acctId, OrderRequest request) async {
     final response = await _client.post(
       'iserver/account/$acctId/orders',
       body: {
@@ -72,7 +73,8 @@ class OrderService {
   ///
   /// Endpoint: `DELETE /iserver/account/{acctId}/order/{orderId}`
   Future<bool> cancelOrder(String acctId, String orderId) async {
-    final response = await _client.delete('iserver/account/$acctId/order/$orderId');
+    final response =
+        await _client.delete('iserver/account/$acctId/order/$orderId');
     if (response.statusCode == 200) {
       return true;
     } else {
@@ -100,7 +102,8 @@ class OrderService {
           .map((e) => OrderStatus.fromJson(e))
           .toList();
     } else {
-      throw Exception('Failed to fetch open orders: HTTP ${response.statusCode}');
+      throw Exception(
+          'Failed to fetch open orders: HTTP ${response.statusCode}');
     }
   }
 
@@ -137,7 +140,8 @@ class OrderService {
       }
       throw Exception('Invalid account summary payload structure.');
     } else {
-      throw Exception('Failed to fetch account summary: HTTP ${response.statusCode}');
+      throw Exception(
+          'Failed to fetch account summary: HTTP ${response.statusCode}');
     }
   }
 }

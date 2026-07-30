@@ -61,12 +61,16 @@ class Position {
     return Position(
       acctId: json['acctId']?.toString() ?? json['account']?.toString() ?? '',
       conid: parseInt(json['conid']),
-      contractDescription: json['contractDescription']?.toString() ?? json['ticker']?.toString() ?? json['symbol']?.toString() ?? '',
+      contractDescription: json['contractDescription']?.toString() ??
+          json['ticker']?.toString() ??
+          json['symbol']?.toString() ??
+          '',
       position: parseDouble(json['position'] ?? json['pos']),
       mktPrice: parseDouble(json['mktPrice'] ?? json['mktprice']),
       mktValue: parseDouble(json['mktValue'] ?? json['mktvalue']),
       avgCost: parseDouble(json['avgCost'] ?? json['avgcost']),
-      unrealizedPnl: parseDouble(json['unrealizedPnl'] ?? json['unrealizedpnl']),
+      unrealizedPnl:
+          parseDouble(json['unrealizedPnl'] ?? json['unrealizedpnl']),
       realizedPnl: parseDouble(json['realizedPnl'] ?? json['realizedpnl']),
       currency: json['currency']?.toString() ?? 'USD',
     );
@@ -146,13 +150,17 @@ class AccountSummary {
 
     return AccountSummary(
       acctId: json['acctId']?.toString() ?? json['account']?.toString() ?? '',
-      netLiquidation: parseDouble(json['netLiquidation'] ?? json['netliquidation']),
-      totalCashValue: parseDouble(json['totalCashValue'] ?? json['totalcashvalue']),
+      netLiquidation:
+          parseDouble(json['netLiquidation'] ?? json['netliquidation']),
+      totalCashValue:
+          parseDouble(json['totalCashValue'] ?? json['totalcashvalue']),
       settledCash: parseDouble(json['settledCash'] ?? json['settledcash']),
       accruedCash: parseDouble(json['accruedCash'] ?? json['accruedcash']),
       buyingPower: parseDouble(json['buyingPower'] ?? json['buyingpower']),
-      equityWithLoanValue: parseDouble(json['equityWithLoanValue'] ?? json['equitywithloanvalue']),
-      unrealizedPnl: parseDouble(json['unrealizedPnl'] ?? json['unrealizedpnl']),
+      equityWithLoanValue: parseDouble(
+          json['equityWithLoanValue'] ?? json['equitywithloanvalue']),
+      unrealizedPnl:
+          parseDouble(json['unrealizedPnl'] ?? json['unrealizedpnl']),
       realizedPnl: parseDouble(json['realizedPnl'] ?? json['realizedpnl']),
     );
   }

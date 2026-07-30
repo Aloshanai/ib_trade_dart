@@ -49,7 +49,8 @@ void main() {
 
       final service = ScannerService(client);
       final results = await service.runScanner(
-        const ScannerRequest(instrument: 'STK', type: 'TOP_PERC_GAIN', location: 'STK.US.MAJOR'),
+        const ScannerRequest(
+            instrument: 'STK', type: 'TOP_PERC_GAIN', location: 'STK.US.MAJOR'),
       );
 
       expect(results.length, equals(2));

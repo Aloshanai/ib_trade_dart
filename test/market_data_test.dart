@@ -8,7 +8,8 @@ void main() {
     test('getSnapshot retrieves and parses market data snapshot', () async {
       final mockClient = MockClient((request) async {
         if (request.url.path.contains('/iserver/marketdata/snapshot')) {
-          expect(request.url.queryParameters['conids'], equals('265598,3691937'));
+          expect(
+              request.url.queryParameters['conids'], equals('265598,3691937'));
           return http.Response(
             '''
             [

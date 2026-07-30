@@ -35,8 +35,11 @@ class Contract {
           ? json['conid'] as int
           : int.tryParse(json['conid']?.toString() ?? '') ?? 0,
       symbol: json['symbol']?.toString() ?? json['ticker']?.toString() ?? '',
-      secType: json['secType']?.toString() ?? json['assetClass']?.toString() ?? 'STK',
-      exchange: json['exchange']?.toString() ?? json['listingExchange']?.toString(),
+      secType: json['secType']?.toString() ??
+          json['assetClass']?.toString() ??
+          'STK',
+      exchange:
+          json['exchange']?.toString() ?? json['listingExchange']?.toString(),
       currency: json['currency']?.toString(),
       companyName: json['companyName']?.toString(),
     );

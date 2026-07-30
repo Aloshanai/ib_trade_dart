@@ -41,7 +41,8 @@ void main() {
 
     test('cancelOrder sends DELETE request', () async {
       final mockClient = MockClient((request) async {
-        if (request.method == 'DELETE' && request.url.path.contains('/iserver/account/U1234567/order/8001')) {
+        if (request.method == 'DELETE' &&
+            request.url.path.contains('/iserver/account/U1234567/order/8001')) {
           return http.Response('{"msg": "Order cancelled"}', 200);
         }
         return http.Response('Not Found', 404);

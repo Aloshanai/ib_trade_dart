@@ -32,47 +32,24 @@ The Interactive Brokers Client Portal Gateway is a Java-based application. You n
   java -version
   ```
 
----
+## 2. Setting Up the Repository
 
-## 2. Setting Up the Repositories
+Clone the `ib_trade_dart` repository to your local machine:
 
-The project is structured into two main modules. Because `ib_trade_dart` depends on `ib_trade_core` via a local path, you **must clone them side-by-side** in the same parent directory.
-
-### Target Directory Structure:
+```bash
+git clone https://github.com/Aloshanai/ib_trade_dart.git
+cd ib_trade_dart
 ```
-my_trading_workspace/
-├── ib_trade_core/
-└── ib_trade_dart/
-```
-
-### Setup Steps:
-
-1. Create a parent directory for your workspace (e.g., `ib_workspace`) and navigate into it:
-   ```bash
-   mkdir ib_workspace
-   cd ib_workspace
-   ```
-2. Clone both repositories:
-   ```bash
-   git clone https://github.com/Aloshanai/ib_trade_core.git
-   git clone https://github.com/Aloshanai/ib_trade_dart.git
-   ```
 
 ---
 
 ## 3. Fetching Dependencies
 
-Once you have cloned the repositories side-by-side:
+Fetch the package dependencies, including `ib_trade_core` from pub.dev:
 
-1. Navigate to the core library first and fetch dependencies:
-   ```bash
-   cd ib_trade_core
-   dart pub get
-   ```
-2. Navigate to the main SDK library and fetch its dependencies:
-   ```bash
-   cd ../ib_trade_dart
-   dart pub get
+```bash
+dart pub get
+```
    ```
 
 ---
@@ -188,12 +165,7 @@ final client = IbTradeClient(config: config);
 
 ### 4. Dependency Resolution Error
 - **Problem:** Dart cannot find `ib_trade_core`.
-- **Solution:** Make sure `ib_trade_core` and `ib_trade_dart` are in the **same parent directory** (e.g. side-by-side). Check `pubspec.yaml` of `ib_trade_dart` to verify the path:
-  ```yaml
-  dependencies:
-    ib_trade_core:
-      path: ../ib_trade_core
-  ```
+- **Solution:** Run `dart pub get` to fetch the dependency from pub.dev. Make sure your internet connection is active and that your `pubspec.yaml` contains `ib_trade_core` under `dependencies`.
 
 ---
 

@@ -33,7 +33,8 @@ class IbWebSocketManager {
               (config ?? GatewayConfig.fromEnvironment()).baseWsUri,
               cookieClient: cookieClient,
               heartbeatInterval: Duration(
-                seconds: (config ?? GatewayConfig.fromEnvironment()).tickleIntervalSeconds,
+                seconds: (config ?? GatewayConfig.fromEnvironment())
+                    .tickleIntervalSeconds,
               ),
             ) {
     _listenToMessages();
@@ -52,7 +53,8 @@ class IbWebSocketManager {
   Stream<OrderStatus> get orderStatusStream => _orderStatusController.stream;
 
   /// Stream of incoming account summary updates.
-  Stream<AccountSummary> get accountSummaryStream => _accountSummaryController.stream;
+  Stream<AccountSummary> get accountSummaryStream =>
+      _accountSummaryController.stream;
 
   /// Connects to the gateway WebSocket endpoint.
   Future<void> connect() async {
@@ -80,13 +82,20 @@ class IbWebSocketManager {
       if (decoded is Map<String, dynamic>) {
         final topic = decoded['topic']?.toString() ?? '';
 
-        if (topic.startsWith('smd+') || decoded.containsKey('smd') || decoded.containsKey('_field')) {
+        if (topic.startsWith('smd+') ||
+            decoded.containsKey('smd') ||
+            decoded.containsKey('_field')) {
           _marketDataController.add(MarketDataTick.fromJson(decoded));
-        } else if (topic.startsWith('sor') || decoded.containsKey('orderId') || decoded.containsKey('orderStatus')) {
+        } else if (topic.startsWith('sor') ||
+            decoded.containsKey('orderId') ||
+            decoded.containsKey('orderStatus')) {
           _orderStatusController.add(OrderStatus.fromJson(decoded));
-        } else if (topic.startsWith('sact') || decoded.containsKey('netLiquidation') || decoded.containsKey('netliquidation')) {
+        } else if (topic.startsWith('sact') ||
+            decoded.containsKey('netLiquidation') ||
+            decoded.containsKey('netliquidation')) {
           _accountSummaryController.add(AccountSummary.fromJson(decoded));
-        } else if (decoded.containsKey('conid') && decoded.containsKey('field')) {
+        } else if (decoded.containsKey('conid') &&
+            decoded.containsKey('field')) {
           _marketDataController.add(MarketDataTick.fromJson(decoded));
         }
       }

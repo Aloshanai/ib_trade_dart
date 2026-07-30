@@ -19,7 +19,8 @@ class ScannerService {
       final jsonMap = jsonDecode(response.body) as Map<String, dynamic>;
       return ScannerParams.fromJson(jsonMap);
     } else {
-      throw Exception('Failed to fetch scanner parameters: HTTP ${response.statusCode}');
+      throw Exception(
+          'Failed to fetch scanner parameters: HTTP ${response.statusCode}');
     }
   }
 
@@ -46,7 +47,8 @@ class ScannerService {
       }
       return [];
     } else {
-      throw Exception('Failed to run market scanner: HTTP ${response.statusCode}');
+      throw Exception(
+          'Failed to run market scanner: HTTP ${response.statusCode}');
     }
   }
 }

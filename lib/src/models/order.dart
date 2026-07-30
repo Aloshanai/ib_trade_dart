@@ -190,17 +190,31 @@ class OrderStatus {
     }
 
     return OrderStatus(
-      orderId: json['orderId']?.toString() ?? json['order_id']?.toString() ?? json['id']?.toString() ?? '',
+      orderId: json['orderId']?.toString() ??
+          json['order_id']?.toString() ??
+          json['id']?.toString() ??
+          '',
       acctId: json['acctId']?.toString() ?? json['account']?.toString(),
-      status: json['status']?.toString() ?? json['orderStatus']?.toString() ?? 'Unknown',
-      totalQuantity: parseDouble(json['totalQuantity'] ?? json['size'] ?? json['quantity']),
-      filledQuantity: parseDouble(json['filledQuantity'] ?? json['filledSize'] ?? json['filled']),
-      remainingQuantity: parseDouble(json['remainingQuantity'] ?? json['remainingSize'] ?? json['remaining']),
-      avgFillPrice: parseDouble(json['avgFillPrice'] ?? json['avgPrice'] ?? json['price']),
+      status: json['status']?.toString() ??
+          json['orderStatus']?.toString() ??
+          'Unknown',
+      totalQuantity: parseDouble(
+          json['totalQuantity'] ?? json['size'] ?? json['quantity']),
+      filledQuantity: parseDouble(
+          json['filledQuantity'] ?? json['filledSize'] ?? json['filled']),
+      remainingQuantity: parseDouble(json['remainingQuantity'] ??
+          json['remainingSize'] ??
+          json['remaining']),
+      avgFillPrice: parseDouble(
+          json['avgFillPrice'] ?? json['avgPrice'] ?? json['price']),
       conid: parseInt(json['conid']),
       symbol: json['symbol']?.toString() ?? json['ticker']?.toString(),
-      side: json['side'] != null ? OrderSide.fromString(json['side'].toString()) : null,
-      orderType: json['orderType'] != null ? OrderType.fromString(json['orderType'].toString()) : null,
+      side: json['side'] != null
+          ? OrderSide.fromString(json['side'].toString())
+          : null,
+      orderType: json['orderType'] != null
+          ? OrderType.fromString(json['orderType'].toString())
+          : null,
       price: json['price'] != null ? parseDouble(json['price']) : null,
       time: json['time']?.toString() ?? json['lastUpdateTime']?.toString(),
     );

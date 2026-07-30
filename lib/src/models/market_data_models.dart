@@ -29,8 +29,14 @@ class MarketDataTick {
     }
 
     return MarketDataTick(
-      conid: parseInt(json['conid'] ?? json['con_id'] ?? json['smd'] ?? json['topic']?.toString().replaceAll('smd+', '')),
-      field: json['_field']?.toString() ?? json['field']?.toString() ?? json['code']?.toString() ?? 'unknown',
+      conid: parseInt(json['conid'] ??
+          json['con_id'] ??
+          json['smd'] ??
+          json['topic']?.toString().replaceAll('smd+', '')),
+      field: json['_field']?.toString() ??
+          json['field']?.toString() ??
+          json['code']?.toString() ??
+          'unknown',
       value: json['value'] ?? json['_val'],
       timestamp: json['time'] != null
           ? DateTime.tryParse(json['time'].toString()) ?? DateTime.now()
@@ -105,7 +111,12 @@ class MarketDataSnapshot {
     double? parseDouble(dynamic val) {
       if (val == null) return null;
       if (val is num) return val.toDouble();
-      final str = val.toString().replaceAll('C', '').replaceAll('H', '').replaceAll('L', '').trim();
+      final str = val
+          .toString()
+          .replaceAll('C', '')
+          .replaceAll('H', '')
+          .replaceAll('L', '')
+          .trim();
       return double.tryParse(str);
     }
 

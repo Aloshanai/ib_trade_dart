@@ -18,7 +18,8 @@ class MarketDataService {
   Stream<MarketDataTick> get ticksStream {
     final ws = _wsManager;
     if (ws == null) {
-      throw StateError('IbWebSocketManager is required to listen to ticksStream.');
+      throw StateError(
+          'IbWebSocketManager is required to listen to ticksStream.');
     }
     return ws.marketDataStream;
   }
@@ -56,7 +57,8 @@ class MarketDataService {
       }
       return [];
     } else {
-      throw Exception('Failed to fetch market data snapshot: HTTP ${response.statusCode}');
+      throw Exception(
+          'Failed to fetch market data snapshot: HTTP ${response.statusCode}');
     }
   }
 
@@ -64,7 +66,8 @@ class MarketDataService {
   void subscribeMarketData(List<int> conids, {List<String>? fields}) {
     final ws = _wsManager;
     if (ws == null) {
-      throw StateError('IbWebSocketManager is required for WebSocket market data subscriptions.');
+      throw StateError(
+          'IbWebSocketManager is required for WebSocket market data subscriptions.');
     }
     ws.subscribeMarketData(conids, fields: fields);
   }
@@ -73,7 +76,8 @@ class MarketDataService {
   void unsubscribeMarketData(List<int> conids) {
     final ws = _wsManager;
     if (ws == null) {
-      throw StateError('IbWebSocketManager is required for WebSocket market data subscriptions.');
+      throw StateError(
+          'IbWebSocketManager is required for WebSocket market data subscriptions.');
     }
     ws.unsubscribeMarketData(conids);
   }

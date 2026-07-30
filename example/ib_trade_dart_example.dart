@@ -30,7 +30,8 @@ void main() async {
     print('\nFetching market data snapshot for AAPL (conid: 265598)...');
     final snapshots = await marketDataService.getSnapshot([265598]);
     for (final snapshot in snapshots) {
-      print('Snapshot: ${snapshot.symbol} | Last: \$${snapshot.last} | Bid: \$${snapshot.bid} | Ask: \$${snapshot.ask}');
+      print(
+          'Snapshot: ${snapshot.symbol} | Last: \$${snapshot.last} | Bid: \$${snapshot.bid} | Ask: \$${snapshot.ask}');
     }
 
     // 6. Run Market Scanner
@@ -43,7 +44,8 @@ void main() async {
     final results = await scannerService.runScanner(scannerRequest);
     print('Found ${results.length} scanner results:');
     for (final result in results.take(5)) {
-      print('  Rank #${result.rank}: ${result.symbol} (conid: ${result.conid})');
+      print(
+          '  Rank #${result.rank}: ${result.symbol} (conid: ${result.conid})');
     }
 
     // 7. Submit a Limit Order
