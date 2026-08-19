@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ib_trade_core/ib_trade_core.dart' as core;
 import '../client/ib_trade_client.dart';
 import '../models/order.dart';
 import '../models/position.dart';
@@ -143,5 +144,21 @@ class OrderService {
       throw Exception(
           'Failed to fetch account summary: HTTP ${response.statusCode}');
     }
+  }
+
+  /// Delegates to `ib_trade_core`'s strongly-typed [core.OrderService].
+  Future<List<core.OrderStatus>> getLiveOrders() async {
+    return await _client.orders.getLiveOrders();
+  }
+
+  /// Previews order What-If margin impact.
+  Future<core.OrderPreview> previewOrder(
+      String accountId, core.OrderRequest order) async {
+    return await _client.orders.previewOrder(accountId, order);
+  }
+
+  /// Replies to compliance safety challenge.
+  Future<bool> replyToChallenge(String replyId, bool confirmed) async {
+    return await _client.orders.replyToChallenge(replyId, confirmed);
   }
 }

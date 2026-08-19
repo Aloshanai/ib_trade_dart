@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:ib_trade_core/ib_trade_core.dart';
+import 'package:ib_trade_core/ib_trade_core.dart'
+    hide OrderStatus, AccountSummary;
 import '../models/market_data_models.dart';
 import '../models/order.dart';
 import '../models/position.dart';
