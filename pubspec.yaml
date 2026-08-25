@@ -10,7 +10,7 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
-  ib_trade_core: ^0.1.1
+  ib_trade_core: ^0.1.2
   http: ^1.2.0
   meta: ^1.11.0
 
