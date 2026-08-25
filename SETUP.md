@@ -106,7 +106,7 @@ The API Gateway does not authenticate programmatically. You must log in manually
 The SDK comes with a preconfigured example to test your setup. Make sure your gateway is running and authenticated (Section 4).
 
 1. Navigate to the `ib_trade_dart` root folder.
-2. Open [example/ib_trade_dart_example.dart](file:///c:/Users/Admin/Documents/GitHub/ib_trade_dart/example/ib_trade_dart_example.dart) to inspect or modify the code.
+2. Open [example/ib_trade_dart_example.dart](https://github.com/Aloshanai/ib_trade_dart/blob/main/example/ib_trade_dart_example.dart) to inspect or modify the code.
 3. Run the example:
    ```bash
    dart run example/ib_trade_dart_example.dart
@@ -125,7 +125,7 @@ To verify that the SDK functions correctly and everything is configured properly
    dart test
    ```
 
-All tests are located in the [test/](file:///c:/Users/Admin/Documents/GitHub/ib_trade_dart/test) folder.
+All tests are located in the [test/](https://github.com/Aloshanai/ib_trade_dart/blob/main/test) folder.
 
 ---
 

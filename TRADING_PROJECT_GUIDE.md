@@ -11,7 +11,7 @@ Interactive Brokers does not allow your application to connect directly to their
 1. **Install Java 8 or higher:**
    - The Gateway is a Java application. Download Java (Adoptium Temurin is recommended).
 2. **Download & Configure the Gateway:**
-   - Follow the detailed steps in [SETUP.md: Section 4](file:///c:/Users/Admin/Documents/GitHub/ib_trade_dart/SETUP.md#L57-L101) to download the Client Portal API Gateway zip, extract it, and modify `root/conf.yaml` if needed.
+   - Follow the detailed steps in [SETUP.md: Section 4](https://github.com/Aloshanai/ib_trade_dart/blob/main/SETUP.md#L57-L101) to download the Client Portal API Gateway zip, extract it, and modify `root/conf.yaml` if needed.
 3. **Run the Gateway:**
    - In your command line, run:
      - **Windows:** `bin\run.bat root\conf.yaml`
@@ -57,16 +57,16 @@ For a robust trading application (automated bot or GUI dashboard), decouple your
 
 ```text
 my_trading_app/
-├── lib/
-│   ├── services/
-│   │   ├── ib_connection.dart       # Handles SDK client initialization & authentication checks
-│   │   ├── market_data_service.dart  # Fetches tickers, price snapshots, and scanners
-│   │   └── execution_service.dart    # Manages order creation and execution
-│   ├── models/                       # Custom models (TradeSignals, Positions, Portfolio)
-│   ├── logic/                        # State management (Blocs, Riverpod, or ChangeNotifiers)
-│   │   ├── trading_bloc.dart         # Processes signals and triggers orders
-│   │   └── live_ticker_bloc.dart     # Manages live price updates
-│   └── main.dart
+â”œâ”€â”€ lib/
+â”‚   â”œâ”€â”€ services/
+â”‚   â”‚   â”œâ”€â”€ ib_connection.dart       # Handles SDK client initialization & authentication checks
+â”‚   â”‚   â”œâ”€â”€ market_data_service.dart  # Fetches tickers, price snapshots, and scanners
+â”‚   â”‚   â””â”€â”€ execution_service.dart    # Manages order creation and execution
+â”‚   â”œâ”€â”€ models/                       # Custom models (TradeSignals, Positions, Portfolio)
+â”‚   â”œâ”€â”€ logic/                        # State management (Blocs, Riverpod, or ChangeNotifiers)
+â”‚   â”‚   â”œâ”€â”€ trading_bloc.dart         # Processes signals and triggers orders
+â”‚   â”‚   â””â”€â”€ live_ticker_bloc.dart     # Manages live price updates
+â”‚   â””â”€â”€ main.dart
 ```
 
 ---
@@ -74,7 +74,7 @@ my_trading_app/
 ## 4. Core Implementation Snippets
 
 ### A. Initializing the SDK Client
-Instantiate `GatewayConfig` and pass it to `IbTradeClient` (refer to [configure.md](file:///c:/Users/Admin/Documents/GitHub/ib_trade_dart/configure.md) for more customization options).
+Instantiate `GatewayConfig` and pass it to `IbTradeClient` (refer to [configure.md](https://github.com/Aloshanai/ib_trade_dart/blob/main/configure.md) for more customization options).
 
 ```dart
 // lib/services/ib_connection.dart
@@ -102,7 +102,7 @@ class IbConnection {
 ```
 
 ### B. Real-Time Price Streaming (WebSocket)
-Do not poll the REST API for live prices. Instead, use `IbWebSocketManager` to listen to ticker ticks (refer to [ib_websocket_manager.dart](file:///c:/Users/Admin/Documents/GitHub/ib_trade_dart/lib/src/websocket/ib_websocket_manager.dart)).
+Do not poll the REST API for live prices. Instead, use `IbWebSocketManager` to listen to ticker ticks (refer to [ib_websocket_manager.dart](https://github.com/Aloshanai/ib_trade_dart/blob/main/lib/src/websocket/ib_websocket_manager.dart)).
 
 ```dart
 import 'package:ib_trade_dart/ib_trade_dart.dart';
@@ -124,7 +124,7 @@ void startStreaming(GatewayConfig config, List<int> conids) async {
 ```
 
 ### C. Placing Orders
-Place orders using the `OrderService` (refer to [ib_trade_dart_example.dart](file:///c:/Users/Admin/Documents/GitHub/ib_trade_dart/example/ib_trade_dart_example.dart#L51-L66) for reference).
+Place orders using the `OrderService` (refer to [ib_trade_dart_example.dart](https://github.com/Aloshanai/ib_trade_dart/blob/main/example/ib_trade_dart_example.dart#L51-L66) for reference).
 
 ```dart
 import 'package:ib_trade_dart/ib_trade_dart.dart';

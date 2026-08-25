@@ -118,4 +118,4 @@ void main() {
 >    # root/conf.yaml
 >    listenPort: 5000
 >    ```
-> 4. For detailed gateway setup and user login flow details, refer to [SETUP.md](file:///c:/Users/Admin/Documents/GitHub/ib_trade_dart/SETUP.md).
+> 4. For detailed gateway setup and user login flow details, refer to [SETUP.md](https://github.com/Aloshanai/ib_trade_dart/blob/main/SETUP.md).
