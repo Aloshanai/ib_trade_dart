@@ -1,3 +1,8 @@
+## 0.1.2
+
+- Updated dependency constraint for `ib_trade_core` to `^0.1.2`.
+- Replaced insecure local file links in documentation with secure HTTPS GitHub URLs for maximum pub.dev score.
+
 ## 0.1.1
 
 - Updated core dependency to `ib_trade_core` `^0.1.1`.
