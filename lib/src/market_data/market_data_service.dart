@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ib_trade_core/ib_trade_core.dart' as core;
 import '../client/ib_trade_client.dart';
 import '../models/market_data_models.dart';
 import '../websocket/ib_websocket_manager.dart';
@@ -62,23 +63,71 @@ class MarketDataService {
     }
   }
 
+  /// Delegates to `ib_trade_core`'s strongly-typed [core.MarketDataService].
+  Future<List<core.MarketSnapshot>> getMarketDataSnapshot(
+    List<int> conids, {
+    List<core.MarketDataField>? fields,
+  }) async {
+    return await _client.marketData
+        .getMarketDataSnapshot(conids, fields: fields);
+  }
+
+  /// Fetches historical OHLCV bar series.
+  Future<core.HistoricalDataSeries> getHistoricalBars(
+    int conid, {
+    required dynamic period,
+    required dynamic barSize,
+    bool outsideRth = false,
+    String priceType = 'TRADES',
+  }) async {
+    final periodEnum = period is core.BarPeriod
+        ? period
+        : core.BarPeriod.values.firstWhere(
+            (e) => e.code == period.toString(),
+            orElse: () => core.BarPeriod.oneDay,
+          );
+    final barSizeEnum = barSize is core.BarSize
+        ? barSize
+        : core.BarSize.values.firstWhere(
+            (e) => e.code == barSize.toString(),
+            orElse: () => core.BarSize.oneHour,
+          );
+    return await _client.marketData.getHistoricalBars(
+      conid,
+      period: periodEnum,
+      barSize: barSizeEnum,
+      outsideRth: outsideRth,
+      priceType: priceType,
+    );
+  }
+
+  /// Unsubscribes all active market data snapshots.
+  Future<bool> unsubscribeAll() async {
+    return await _client.marketData.unsubscribeAll();
+  }
+
   /// Subscribes to real-time market data for the given [conids] via WebSocket.
   void subscribeMarketData(List<int> conids, {List<String>? fields}) {
     final ws = _wsManager;
-    if (ws == null) {
-      throw StateError(
-          'IbWebSocketManager is required for WebSocket market data subscriptions.');
+    if (ws != null) {
+      ws.subscribeMarketData(conids, fields: fields);
+    } else {
+      _client.streaming.subscribeQuotes(
+        conids.first,
+        fields: fields?.map((f) => core.MarketDataField.last).toList() ?? [],
+      );
     }
-    ws.subscribeMarketData(conids, fields: fields);
   }
 
   /// Unsubscribes from real-time market data for the given [conids].
   void unsubscribeMarketData(List<int> conids) {
     final ws = _wsManager;
-    if (ws == null) {
-      throw StateError(
-          'IbWebSocketManager is required for WebSocket market data subscriptions.');
+    if (ws != null) {
+      ws.unsubscribeMarketData(conids);
+    } else {
+      for (final conid in conids) {
+        _client.streaming.unsubscribeQuotes(conid);
+      }
     }
-    ws.unsubscribeMarketData(conids);
   }
 }

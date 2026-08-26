@@ -17,8 +17,8 @@ Each skill file must follow this template:
 
 | Filename | Description | Target Layer |
 |----------|-------------|--------------|
-| [base_setup.md](file:///Users/harinikeshr/Documents/2026/projects/ib_trade_dart/.skills/base_setup.md) | Base protocol validation and environment setup. | All |
-| [example_add_transport.md](file:///Users/harinikeshr/Documents/2026/projects/ib_trade_dart/.skills/example_add_transport.md) | Blueprint for implementing a new connection transport channel. | Transport Layer |
+| [base_setup.md](base_setup.md) | Base protocol validation and environment setup. | All |
+| [example_add_transport.md](example_add_transport.md) | Blueprint for implementing a new connection transport channel. | Transport Layer |
 
 ## Triggering a Skill
 

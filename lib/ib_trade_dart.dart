@@ -4,7 +4,21 @@
 /// market data snapshotting, market scanners, order management, and automated challenge resolution.
 library;
 
-export 'package:ib_trade_core/ib_trade_core.dart';
+export 'package:ib_trade_core/ib_trade_core.dart'
+    hide
+        OrderService,
+        MarketDataService,
+        ScannerService,
+        OrderStatus,
+        Position,
+        AccountSummary,
+        ScannerParams,
+        ScannerRequest,
+        ScannerResult,
+        OrderRequest,
+        OrderSide,
+        OrderType,
+        TimeInForce;
 
 export 'src/client/ib_trade_client.dart';
 export 'src/market_data/market_data_service.dart';

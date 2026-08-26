@@ -5,8 +5,11 @@ import 'package:ib_trade_core/ib_trade_core.dart';
 /// The central high-level client for communicating with the IBKR Client Portal Gateway.
 ///
 /// Wraps low-level HTTP transport, session tickling, cookie management,
-/// and automated challenge resolution.
+/// automated challenge resolution, and exposes all domain adaptation services.
 class IbTradeClient {
+  /// Core SDK client facade from `ib_trade_core`.
+  final IbTradeCoreClient coreClient;
+
   /// Connection configuration settings.
   final GatewayConfig config;
 
@@ -22,6 +25,17 @@ class IbTradeClient {
   /// Compliance and safety challenge handler.
   final ChallengeHandler challengeHandler;
 
+  /// Domain adaptation services delegating to [coreClient].
+  SessionService get session => coreClient.session;
+  AccountService get account => coreClient.account;
+  OrderService get orders => coreClient.orders;
+  ContractService get contracts => coreClient.contracts;
+  MarketDataService get marketData => coreClient.marketData;
+  ScannerService get scanner => coreClient.scanner;
+  AlertService get alerts => coreClient.alerts;
+  UserService get user => coreClient.user;
+  StreamingService get streaming => coreClient.streaming;
+
   /// Creates an instance of [IbTradeClient].
   ///
   /// If [config] is not provided, defaults to [GatewayConfig.fromEnvironment()].
@@ -31,6 +45,7 @@ class IbTradeClient {
     CookieClient? cookieClient,
     SessionTickler? sessionTickler,
     ChallengeHandler? challengeHandler,
+    IbTradeCoreClient? coreClient,
   })  : config = config ?? GatewayConfig.fromEnvironment(),
         httpClient = httpClient ??
             HttpClient(
@@ -60,22 +75,38 @@ class IbTradeClient {
                           bypassSslVerification:
                               config?.bypassSslVerification ?? false)),
               (config ?? GatewayConfig.fromEnvironment()).baseHttpUri,
+            ),
+        coreClient = coreClient ??
+            IbTradeCoreClient(
+              config: config ?? GatewayConfig.fromEnvironment(),
+              httpClient: cookieClient ??
+                  CookieClient(httpClient ??
+                      HttpClient(
+                          bypassSslVerification:
+                              config?.bypassSslVerification ?? false)),
+              tickler: sessionTickler,
             );
+
+  /// Establishes session authentication and WebSocket streaming connections.
+  Future<void> connect() async {
+    await coreClient.connect();
+  }
+
+  /// Disconnects active WebSocket stream and halts session tickler.
+  Future<void> disconnect() async {
+    await coreClient.disconnect();
+  }
+
+  /// Cleans up resources.
+  Future<void> dispose() async {
+    await coreClient.dispose();
+  }
 
   /// Checks the gateway session authentication status.
   ///
   /// Endpoint: `GET /iserver/auth/status`
   Future<AuthStatus> checkAuthStatus() async {
-    final response = await get('iserver/auth/status');
-    if (response.statusCode == 200) {
-      final jsonMap = jsonDecode(response.body) as Map<String, dynamic>;
-      return AuthStatus.fromJson(jsonMap);
-    } else {
-      throw IbException(
-        'Failed to check auth status: HTTP ${response.statusCode}',
-        statusCode: response.statusCode,
-      );
-    }
+    return await session.getAuthStatus();
   }
 
   /// Starts periodic session tickling (keep-alive).
@@ -110,7 +141,6 @@ class IbTradeClient {
           await challengeHandler.handleChallenge(challenge);
         }
       }
-      // Retry the original request after confirming challenges
       return await retryAction();
     }
 
@@ -133,8 +163,7 @@ class IbTradeClient {
       if (headers != null) ...headers,
     };
 
-    final response = await cookieClient.get(uri, headers: reqHeaders);
-    return response;
+    return await cookieClient.get(uri, headers: reqHeaders);
   }
 
   /// Executes an HTTP POST request relative to [config.baseHttpUri].
